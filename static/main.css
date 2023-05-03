@@ -1,0 +1,200 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: sans-serif;
+  line-height: 1.2;
+  
+  max-width: 90ch;
+  margin-left: auto;
+  margin-right: auto;
+  
+  min-height: 100vh;
+}
+
+header {
+  background-color: #eee;
+  
+  padding-top: 1ex;
+  padding-bottom: 1ex;
+}
+
+h1 {
+  font-size: 120%;
+  text-align: center;
+}
+
+ul.NameList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  
+  font-size: 200%;
+  
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  
+  gap: 1em;
+  margin-top: 1em;
+}
+
+ul.NameList li a {
+  display: block;
+  
+  text-decoration: none;
+  
+  background-color: #8ae234;
+  color: black;
+  
+  padding: 0.5em;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+  
+  border-radius: 0.5ex;
+}
+
+ul.NameList li.new {
+  flex-basis: 100%;
+}
+
+ul.NameList li.new a {
+  background-color: transparent;
+  font-size: 50%;
+  text-align: center;
+}
+
+.NewMemory {
+  --gap: 1ex;
+  --fade: 2em;
+  
+  position: sticky;
+  bottom: 0;
+  
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.0),
+    rgba(255,255,255,1.0) var(--fade)
+  );
+  padding-top: calc(var(--gap) + var(--fade));
+  padding-bottom: var(--gap);
+  
+  width: 100%;
+  
+  display: flex;
+  flex-direction: row;
+  
+  box-sizing: border-box;
+  
+  gap: var(--gap);
+  padding-left: var(--gap);
+  padding-right: var(--gap);
+}
+
+.NewMemory input[name="date"] {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+.NewMemory input[name="note"] {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+.NewMemory input[type="submit"] {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+
+.MemoryList {
+  --timeline-thickness: 3px;
+  --timeline-spacing: 1.5ex;
+  --timeline-color: #aaa;
+  --timeline-heading-spacing: 2em;
+  
+  border-left-color: var(--timeline-color);
+  border-left-width: var(--timeline-thickness);
+  border-left-style: solid;
+  
+  margin-left: var(--timeline-spacing);
+  margin-right: 1ex;
+  
+  padding-bottom: var(--timeline-heading-spacing);
+}
+
+.MemoryList div {
+  padding-top: var(--timeline-heading-spacing);
+}
+
+.MemoryList ul li,
+.MemoryList h2 {
+  position: relative;
+  padding-left: var(--timeline-spacing);
+}
+
+.MemoryList ul li:not(:last-child) {
+  margin-bottom: 1em;
+}
+
+.MemoryList ul li::before {
+  position: absolute;
+  
+  content: "";
+  
+  box-sizing: border-box;
+  
+  width: 0.5ex;
+  height: var(--timeline-thickness);
+  
+  left: 0;
+  top: 0.4em;
+  
+  background-color: var(--timeline-color);
+}
+
+.MemoryList h2 {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  
+  font-weight: bold;
+  font-variant: small-caps;
+  
+  --top-padding: 1em;
+  --bottom-fade: 2em;
+  padding-top: var(--top-padding);
+  padding-bottom: var(--bottom-fade);
+  
+  color: #444;
+  
+  background: linear-gradient(
+    to top,
+    rgba(255,255,255,0.0),
+    rgba(255,255,255,1.0) var(--bottom-fade)
+  );
+}
+
+.MemoryList h2::before {
+  position: absolute;
+  
+  content: "";
+  
+  box-sizing: border-box;
+  
+  --size: 1em;
+  width: var(--size);
+  height: var(--size);
+  border-radius: calc(0.5 * var(--size));
+  
+  border-width: var(--timeline-thickness);
+  border-style: solid;
+  border-color: var(--timeline-color);
+  
+  left: calc(-0.5 * var(--size) - var(--timeline-thickness));
+  top: calc((1em - var(--size)) * 0.5 + var(--top-padding));
+  
+  background-color: #FFF;
+}
+
