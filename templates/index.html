@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block body %}
+  <header>
+    <h1>Memories of...</h1>
+  </header>
+
+  <ul class="name-list">
+    {% for name in names %}
+      <li><a href="/memories/{{ name | urlencode }}">{{ name }}</a></li>
+    {% endfor %}
+    <li class="new"><a href="#">Add new person</a></li>
+  </ul>
+{% endblock %}

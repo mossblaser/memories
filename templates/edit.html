@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Edit memory of {{ name }}{% endblock %}
+{% block body %}
+  <header>
+    <a href="../memories/{{ memory.name }}#memory-{{ memory.id }}" class="back"><span>&larr;</span></a>
+    <h1>Edit memory of {{ memory.name }}</h1>
+  </header>
+
+  <div class="edit-memory memory-form">
+    <form class="memory-form edit" action="../memories/{{ memory.name }}" method="post">
+      <input type="hidden" name="id" value="{{ memory.id }}">
+      <input type="hidden" name="name" value="{{ memory.name }}">
+      <input type="text" name="note" value="{{ memory.note }}">
+      <input type="date" name="date" value="{{ memory.date }}" required></input>
+      <input type="submit" value="Save"></input>
+    </form>
+    <form class="memory-form delete" action="../memories/{{ memory.name }}" method="post">
+      <input type="hidden" name="id" value="{{ memory.id }}">
+      <input type="submit" value="Delete"></input>
+    </form>
+  </div>
+{% endblock %}

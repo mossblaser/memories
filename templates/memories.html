@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Memories of {{ name }}{% endblock %}
+{% block body %}
+  <header>
+    <a href="../" class="back"><span>&larr;</span></a>
+    <h1>Memories of {{ name }}</h1>
+  </header>
+
+  <div class="memories">
+    <div class="memory-list">
+      {% for age, memories in memories_by_month.items() %}
+        <div class="age" id="age-{{ age[0] }}-{{ age[1] }}">
+          <h2>{{ age | format_years_months }}</h2>
+          <ul>
+            {% for memory in memories %}
+              <li class="memory" id="memory-{{ memory.id }}">
+                <a href="../edit/{{ memory.id }}">{{ memory.note }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  
+  <div class="new-memory">
+    <form class="memory-form" method="post">
+      <input type="text" name="note" placeholder="What did {{ name }} do?">
+      <input type="date" name="date" value="{{ today }}" required></input>
+      <input type="submit" value="Add"></input>
+    </form>
+  </div>
+  
+  <script>
+    if (!window.location.hash) {
+      const lastMemory = document.querySelector(".memory-list .age:last-child .memory:last-child");
+      lastMemory.scrollIntoView();
+    }
+  </script>
+{% endblock %}
