@@ -6,17 +6,42 @@
     <h1>Edit memory of {{ memory.name }}</h1>
   </header>
 
-  <div class="edit-memory memory-form">
-    <form class="memory-form edit" action="../memories/{{ memory.name }}" method="post">
+  <div
+    class="edit-memory memory-form"
+    data-hx-ext="morph"
+    data-hx-swap="morph:outerHTML"
+    data-hx-target=".memory-list"
+    data-hx-select=".memory-list"
+  >
+    <form
+      class="memory-form edit"
+      action="../memories/{{ memory.name }}"
+      data-hx-post="../memories/{{ memory.name }}"
+      method="post"
+    >
       <input type="hidden" name="id" value="{{ memory.id }}">
       <input type="hidden" name="name" value="{{ memory.name }}">
       <input type="text" name="note" value="{{ memory.note }}">
-      <input type="date" name="date" value="{{ memory.date }}" required></input>
-      <input type="submit" value="Save"></input>
+      <input type="date" name="date" value="{{ memory.date }}" required>
+      <input type="submit" value="Save">
     </form>
-    <form class="memory-form delete" action="../memories/{{ memory.name }}" method="post">
+    <form
+      class="memory-form delete"
+      action="../memories/{{ memory.name }}"
+      data-hx-post="../memories/{{ memory.name }}"
+      data-hx-confirm="Are you sure you want to delete this memory?"
+      method="post"
+    >
       <input type="hidden" name="id" value="{{ memory.id }}">
-      <input type="submit" value="Delete"></input>
+      <input type="submit" value="Delete">
     </form>
+    {% if hx_request %}
+      <button
+        class="cancel"
+        data-hx-get="../memories/{{ memory.name }}"
+      >
+          Cancel
+      </button>
+    {% endif %}
   </div>
 {% endblock %}

@@ -278,7 +278,7 @@ div.memories {
   color: inherit;
 }
 
-.new-memory {
+#new-memory {
   flex-grow: 0;
   flex-shrink: 0;
   
@@ -295,7 +295,8 @@ div.memories {
   flex-shrink: 0;
 }
 
-.edit-memory > .delete {
+.edit-memory > .delete
+.edit-memory > .cancel {
   flex-grow: 0;
   flex-shrink: 0;
 }

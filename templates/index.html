@@ -8,6 +8,15 @@
     {% for name in names %}
       <li><a href="/memories/{{ name | urlencode }}">{{ name }}</a></li>
     {% endfor %}
-    <li class="new"><a href="#">Add new person</a></li>
+    <li class="new"><a id="new-button" href="#">Add new person</a></li>
   </ul>
+  
+  <script>
+    document.getElementById("new-button").addEventListener("click", () => {
+      const name = prompt("Enter name:")
+      if (name) {
+        window.location = `memories/${name}`
+      }
+    });
+  </script>
 {% endblock %}

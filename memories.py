@@ -166,7 +166,10 @@ async def memories(request: web.Request) -> web.Response:
         "memories_by_month": group_memories(get_memories(request.app["db"].cursor(), name)),
     }
     
-    return render_template(request, "memories.html", variables)
+    response = render_template(request, "memories.html", variables)
+    if "id" in request.query:
+        response.headers["x-id"] = request.query["id"]
+    return response
 
 
 @routes.post("/memories/{name}")
@@ -204,7 +207,7 @@ async def post_memories(request: web.Request) -> web.Response:
         
         request.app["db"].commit()
     
-        raise web.HTTPSeeOther(f"{request.url.path}#memory-{id}")
+        raise web.HTTPSeeOther(f"{request.url.path}?id={id}#memory-{id}")
     elif id is not None:
         # Delete
         cur = request.app["db"].cursor()
@@ -220,9 +223,12 @@ async def post_memories(request: web.Request) -> web.Response:
 async def memories(request: web.Request) -> web.Response:
     id = request.match_info["id"]
     
-    memory = get_memory(request.app["db"].cursor(), id)
+    variables = {
+        "memory": get_memory(request.app["db"].cursor(), id),
+        "hx_request": "HX-Request" in request.headers,
+    }
     
-    return render_template(request, "edit.html", {"memory": memory})
+    return render_template(request, "edit.html", variables)
 
 
 routes.static("/static", Path(__file__).parent / "static")
