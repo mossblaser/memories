@@ -225,7 +225,7 @@ async def post_memories(request: web.Request) -> web.Response:
 
         request.app["db"].commit()
 
-        raise web.HTTPSeeOther(f"{request.url.path}?id={id}#memory-{id}")
+        raise web.HTTPSeeOther(f"memories/{name}?id={id}#memory-{id}")
     elif id is not None:
         # Delete
         cur = request.app["db"].cursor()
@@ -235,7 +235,7 @@ async def post_memories(request: web.Request) -> web.Response:
         request.app["db"].commit()
 
         raise web.HTTPSeeOther(
-            f"{request.url.path}#age-{memory.age.years}-{memory.age.months}"
+            f"memories/{name}#age-{memory.age.years}-{memory.age.months}"
         )
 
 

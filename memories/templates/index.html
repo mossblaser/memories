@@ -6,7 +6,7 @@
 
   <ul class="name-list">
     {% for name in names %}
-      <li><a href="/memories/{{ name | urlencode }}">{{ name }}</a></li>
+      <li><a href="memories/{{ name | urlencode }}">{{ name }}</a></li>
     {% endfor %}
     <li class="new"><a id="new-button" href="#">Add new person</a></li>
   </ul>
