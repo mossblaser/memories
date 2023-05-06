@@ -1,0 +1,2 @@
+include memories/static/*
+include memories/templates/*

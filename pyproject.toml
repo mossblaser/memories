@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "memories"
+version = "0.0.1"
+dependencies = [
+    "aiohttp",
+    "jinja2",
+]
+
+[project.scripts]
+memories = "memories:main"
+
+[tool.setuptools]
+packages = ["memories"]
+include-package-data = true
+
+[tool.mypy]
+plugins = "numpy.typing.mypy_plugin"
