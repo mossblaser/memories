@@ -234,42 +234,50 @@ async def memories(request: web.Request) -> web.Response:
 routes.static("/static", Path(__file__).parent / "static")
 
 
-app = web.Application()
-app.add_routes(routes)
+def make_app(db_filename: Path) -> web.Application:
+    app = web.Application()
+    app.add_routes(routes)
+
+    @app.cleanup_ctx.append
+    async def db(app: web.Application):
+        app["db"] = sqlite3.connect(db_filename)
+        
+        cur = app["db"].cursor()
+        cur.execute(
+            """
+                CREATE TABLE IF NOT EXISTS memories(
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name,
+                    date,
+                    note
+                )
+            """
+        )
+        app["db"].commit()
+        
+        try:
+            yield
+        finally:
+            app["db"].close()
 
 
-@app.cleanup_ctx.append
-async def db(app: web.Application):
-    app["db"] = sqlite3.connect("memories.db")
+    @app.on_startup.append
+    async def env(app: web.Application):
+        app["env"] = jinja2.Environment(
+            loader=jinja2.FileSystemLoader(Path(__file__).parent / "templates"),
+            autoescape=jinja2.select_autoescape(),
+        )
+        
+        app["env"].filters["format_years_months"] = format_years_months
     
-    cur = app["db"].cursor()
-    cur.execute(
-        """
-            CREATE TABLE IF NOT EXISTS memories(
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name,
-                date,
-                note
-            )
-        """
-    )
-    app["db"].commit()
-    
-    try:
-        yield
-    finally:
-        app["db"].close()
-
-
-@app.on_startup.append
-async def env(app: web.Application):
-    app["env"] = jinja2.Environment(
-        loader=jinja2.FileSystemLoader(Path(__file__).parent / "templates"),
-        autoescape=jinja2.select_autoescape(),
-    )
-    
-    app["env"].filters["format_years_months"] = format_years_months
+    return app
 
 
 if __name__ == "__main__":
-    web.run_app(app)
+    from argparse import ArgumentParser
+    parser = ArgumentParser()
+    parser.add_argument("database", type=Path)
+    
+    args = parser.parse_args()
+    
+    web.run_app(make_app(args.database))
